@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head><title>Lost & Found</title></head>
+<body>
+    <h2>Lost & Found</h2>
+    <form method="POST" enctype="multipart/form-data">
+        Message: <input type="text" name="message" required><br>
+        File (optional if eligible): <input type="file" name="file"><br>
+        <button type="submit">Submit</button>
+    </form>
+    <h3>Submissions:</h3>
+    {% for item in items %}
+        <p><strong>{{ item.email }}</strong>: {{ item.message }}</p>
+        {% if item.image %}<img src="{{ item.image }}" width="100">{% endif %}
+    {% endfor %}
+</body>
+</html>
