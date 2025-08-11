@@ -1,6 +1,5 @@
 from flask import Blueprint, request, redirect, session, url_for, Response, flash
 from werkzeug.security import generate_password_hash, check_password_hash
-from bson.objectid import ObjectId
 from db import mongo  # ✅ uses the shared mongo instance initialized in app.py
 import requests
 import os
