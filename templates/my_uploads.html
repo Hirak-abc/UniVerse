@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Lost & Found | UniVerse</title>
+    <meta charset="UTF-8" />
+    <title>My Uploads | UniVerse</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Fonts -->
+    <!-- Lobster Two & Inter Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Lobster+Two:wght@700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -15,11 +13,32 @@
             background-size: 400% 400%;
             animation: gradientShift 15s ease infinite;
         }
-        h1, h2 {
+        h1, a.button-purple {
             font-family: 'Lobster Two', cursive;
         }
+        #my-uploads-list > div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            background: rgba(17, 24, 39, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(75, 85, 99, 0.3);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #my-uploads-list > div:hover {
+            transform: translateY(-8px) scale(1.02);
+        }
+        #my-uploads-list img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 0.75rem;
+            border-radius: 0.5rem;
+        }
 
-        /* Gradient animation */
+        /* Gradient shift animation */
         @keyframes gradientShift {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -50,7 +69,7 @@
             animation: float 6s ease-in-out infinite;
         }
 
-        /* Particles */
+        /* Particles background */
         .particles {
             position: fixed;
             top: 0;
@@ -69,13 +88,19 @@
             animation: particleFloat 20s infinite linear;
         }
         @keyframes particleFloat {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
             10% { opacity: 1; }
             90% { opacity: 1; }
-            100% { transform: translateY(-100px) rotate(720deg); opacity: 0; }
+            100% {
+                transform: translateY(-100px) rotate(720deg);
+                opacity: 0;
+            }
         }
 
-        /* Button glow */
+        /* Button glow effect */
         .btn-glow {
             position: relative;
             overflow: hidden;
@@ -95,9 +120,9 @@
         }
     </style>
 </head>
-<body class="min-h-screen py-10 px-4 text-gray-100 relative">
+<body class="text-white min-h-screen flex flex-col items-center p-6 relative">
 
-    <!-- Particles -->
+    <!-- Particles Background -->
     <div class="particles">
         <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
         <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
@@ -110,70 +135,37 @@
         <div class="particle" style="left: 90%; animation-delay: 16s;"></div>
     </div>
 
-    <div class="max-w-2xl mx-auto glass-dark shadow-lg rounded-xl p-8 card-hover">
-        <h1 class="text-5xl font-bold text-purple-400 mb-6 text-center float-animation">🧳 Lost & Found</h1>
+    <h1 class="text-4xl md:text-5xl font-bold mb-6 text-purple-400 float-animation text-center">
+        My Uploads (<span class="text-purple-300">{{USER_EMAIL}}</span>)
+    </h1>
 
-        <!-- Back Button -->
-        <div class="mb-6 text-center">
-            <a href="/" 
-               class="inline-block bg-purple-600 hover:bg-purple-700 text-white font-medium py-1 px-3 rounded-md text-sm transition btn-glow">
-               ⬅ Back to Homepage
-            </a>
-        </div>
-
-        <!-- Flash messages -->
-        {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            <div class="mb-4 p-4 bg-green-800 text-green-100 rounded shadow text-center">
-              {% for message in messages %}
-                <p>{{ message }}</p>
-              {% endfor %}
-            </div>
-          {% endif %}
-        {% endwith %}
-
-        <!-- Form -->
-        <form method="POST" enctype="multipart/form-data" class="space-y-4 text-center">
-            <div>
-                <label class="block text-sm font-medium text-purple-300">Message</label>
-                <input type="text" name="message" required
-                       class="mt-1 w-full px-4 py-2 border border-purple-400 bg-transparent glass-dark text-gray-100 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 text-center" />
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium text-purple-300">Image (optional)</label>
-                <input type="file" name="file"
-                       class="mt-1 block w-full text-sm text-gray-300 
-                              file:mr-4 file:py-2 file:px-4 file:border file:border-purple-400 
-                              file:rounded-md file:text-sm file:bg-transparent glass-dark file:text-purple-300 
-                              hover:file:bg-gray-600" />
-            </div>
-
-            <button type="submit"
-                    class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-md transition btn-glow">
-                Submit
-            </button>
-        </form>
-
-        <!-- Submissions -->
-        <div class="mt-10">
-            <h2 class="text-xl font-semibold text-purple-400 mb-4 text-center">📋 Submissions</h2>
-            <div class="space-y-4">
-                {% for item in items %}
-                    <div class="border border-purple-400 rounded-md p-4 glass-dark text-center card-hover">
-                        <p class="font-semibold text-purple-300">{{ item.email }}</p>
-                        <p class="text-gray-200">{{ item.message }}</p>
-                        {% if item.image_url %}
-                            <img src="{{ item.image_url }}" alt="Uploaded image" class="mt-3 rounded-md w-48 shadow mx-auto">
-                        {% endif %}
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
+    <div class="w-full max-w-2xl mt-8 space-y-6 mx-auto" id="my-uploads-list">
+        {{FEED_CONTENT}}
     </div>
 
+    <a href="/feed" class="mt-8 bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded text-white transition btn-glow">
+        Back to Feed
+    </a>
+
     <script>
-        // Create particles dynamically
+        async function likePost(postId) {
+            try {
+                const resp = await fetch('/feed/like/' + postId, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                const data = await resp.json();
+                if (resp.ok) {
+                    document.getElementById('likes-count-' + postId).textContent = data.likes;
+                } else {
+                    alert('Error liking post: ' + (data.error || 'Unknown error'));
+                }
+            } catch (e) {
+                alert('Error liking post: ' + e.message);
+            }
+        }
+
+        // Add particles dynamically
         function createParticle() {
             const particle = document.createElement('div');
             particle.className = 'particle';

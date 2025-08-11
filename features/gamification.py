@@ -1,1 +1,0 @@
-# Gamification features and ranks

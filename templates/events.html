@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+  <meta charset="UTF-8">
+  <title>Events Dashboard | UniVerse</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Apply saved theme before rendering
+    if (localStorage.getItem("theme") === "dark") {
+      document.documentElement.classList.add("dark");
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    
+    /* Animated gradient background */
+    .gradient-bg {
+      background: linear-gradient(-45deg, #667eea, #764ba2, #667eea, #f093fb);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+    }
+    
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    /* Glassmorphism effect */
+    .glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .glass-dark {
+      background: rgba(17, 24, 39, 0.85);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(75, 85, 99, 0.3);
+    }
+    
+    /* Hover animations */
+    .card-hover {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .card-hover:hover {
+      transform: translateY(-8px) scale(1.02);
+    }
+    
+    /* Floating animation */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+    
+    .float-animation {
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    /* Shimmer effect */
+    .shimmer {
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      animation: shimmer 2s infinite;
+    }
+    
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    
+    /* Particle background */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+    
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      animation: particleFloat 20s infinite linear;
+    }
+    
+    @keyframes particleFloat {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100px) rotate(720deg);
+        opacity: 0;
+      }
+    }
+    
+    /* Calendar pulse animation */
+    @keyframes pulse-calendar {
+      0%, 100% { 
+        transform: scale(1);
+        filter: drop-shadow(0 0 10px rgba(34, 197, 94, 0.5));
+      }
+      50% { 
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 20px rgba(34, 197, 94, 0.8));
+      }
+    }
+    
+    .calendar-pulse {
+      animation: pulse-calendar 3s ease-in-out infinite;
+    }
+    
+    /* Floating action button */
+    .fab {
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      box-shadow: 0 8px 32px rgba(59, 130, 246, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .fab:hover {
+      transform: scale(1.1) rotate(90deg);
+      box-shadow: 0 12px 40px rgba(59, 130, 246, 0.5);
+    }
+    
+    /* Event card animations */
+    .event-card {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .event-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      transition: left 0.6s;
+    }
+    
+    .event-card:hover::before {
+      left: 100%;
+    }
+    
+    /* Search bar styling */
+    .search-glow {
+      position: relative;
+    }
+    
+    .search-glow::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      padding: 2px;
+      background: linear-gradient(45deg, #3b82f6, #8b5cf6, #06b6d4);
+      border-radius: inherit;
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .search-glow:focus-within::before {
+      opacity: 1;
+    }
+    
+    /* Stats counter animation */
+    @keyframes countUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .count-up {
+      animation: countUp 0.8s ease-out forwards;
+    }
+    
+    /* Filter buttons */
+    .filter-btn {
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .filter-btn.active {
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      transform: scale(1.05);
+    }
+    
+    .filter-btn:not(.active):hover {
+      background: rgba(59, 130, 246, 0.2);
+    }
+    
+    /* Loading skeleton */
+    @keyframes skeleton-loading {
+      0% { background-position: -200px 0; }
+      100% { background-position: calc(200px + 100%) 0; }
+    }
+    
+    .skeleton {
+      background: linear-gradient(90deg, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.1) 75%);
+      background-size: 200px 100%;
+      animation: skeleton-loading 1.5s infinite;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 dark:text-white font-sans transition-colors duration-300 gradient-bg min-h-screen relative">
+  
+  <!-- Animated particles background -->
+  <div class="particles">
+    <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+    <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
+    <div class="particle" style="left: 30%; animation-delay: 4s;"></div>
+    <div class="particle" style="left: 40%; animation-delay: 6s;"></div>
+    <div class="particle" style="left: 50%; animation-delay: 8s;"></div>
+    <div class="particle" style="left: 60%; animation-delay: 10s;"></div>
+    <div class="particle" style="left: 70%; animation-delay: 12s;"></div>
+    <div class="particle" style="left: 80%; animation-delay: 14s;"></div>
+    <div class="particle" style="left: 90%; animation-delay: 16s;"></div>
+  </div>
+
+  <main class="max-w-6xl mx-auto py-12 px-6 relative z-10">
+    
+    <!-- Header Section -->
+    <header class="mb-12 text-center relative">
+      <!-- Calendar Icon -->
+      <div class="float-animation mb-8">
+        <div class="inline-block p-6 rounded-full glass-dark shadow-2xl calendar-pulse">
+          <span class="text-6xl">📅</span>
+        </div>
+      </div>
+
+      <h1 class="text-5xl font-bold bg-gradient-to-r from-green-400 via-blue-500 to-purple-500 bg-clip-text text-transparent mb-4">
+        Events Portal
+      </h1>
+      <div class="flex items-center justify-center mb-6">
+        <div class="h-1 w-20 bg-gradient-to-r from-green-400 to-blue-500 rounded-full"></div>
+        <span class="mx-4 text-2xl">🎉</span>
+        <div class="h-1 w-20 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
+      </div>
+      
+      <p class="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
+        Discover, create, and participate in amazing events happening in your university
+      </p>
+    </header>
+
+    <!-- Events Section -->
+    <section class="glass-dark rounded-2xl p-8 shadow-2xl mb-8">
+      <div class="flex items-center justify-between mb-8">
+        <h2 class="text-3xl font-bold text-white flex items-center">
+          <span class="text-4xl mr-3">📆</span>
+          Upcoming Events
+        </h2>
+        <div class="glass rounded-lg px-4 py-2">
+          <span class="text-sm text-gray-300">Sorted by date</span>
+        </div>
+      </div>
+
+      <!-- Events Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="events-container">
+    
+
+        <!--DYNAMIC_EVENTS-->
+      </div>
+
+      <!-- Load More Button -->
+      <div class="text-center mt-8">
+        <button class="glass border-2 border-gray-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-white/10 transition-all duration-300 transform hover:scale-105">
+          <span class="flex items-center">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
+            Load More Events
+          </span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center">
+      <div class="glass-dark rounded-2xl p-6 shadow-xl">
+        <div class="flex items-center justify-center mb-3">
+          <div class="h-px w-16 bg-gradient-to-r from-transparent to-green-400"></div>
+          <span class="mx-4 text-2xl">📅</span>
+          <div class="h-px w-16 bg-gradient-to-l from-transparent to-purple-400"></div>
+        </div>
+        <p class="text-gray-400 text-sm">
+          Connect, Celebrate, Create Memories • Part of UniVerse Platform
+        </p>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- Floating Action Button -->
+  <a href="/events/add" 
+     class="fab fixed bottom-8 right-8 w-16 h-16 flex items-center justify-center rounded-full text-white text-2xl font-bold z-50">
+    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+    </svg>
+  </a>
+
+  <script>
+    // Add interactive particles
+    function createParticle() {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.animationDelay = Math.random() * 20 + 's';
+      particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+      document.querySelector('.particles').appendChild(particle);
+      
+      setTimeout(() => {
+        particle.remove();
+      }, 20000);
+    }
+    
+    // Create particles periodically
+    setInterval(createParticle, 3000);
+
+    // Filter functionality
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        
+        // Add filter logic here
+        console.log('Filter:', this.textContent.trim());
+      });
+    });
+
+    // Search functionality
+    const searchInput = document.querySelector('input[type="text"]');
+    searchInput.addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase();
+      // Add search logic here
+      console.log('Search:', searchTerm);
+    });
+
+    // Animate counter numbers
+    function animateCounter(element, target) {
+      let current = 0;
+      const increment = target / 50;
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          element.textContent = target;
+          clearInterval(timer);
+        } else {
+          element.textContent = Math.ceil(current);
+        }
+      }, 30);
+    }
+
+    // Initialize counters on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(() => {
+        animateCounter(document.querySelector('.count-up:nth-child(2)'), 24);
+      }, 500);
+    });
+
+    // Add event card interactions
+    document.querySelectorAll('.event-card').forEach(card => {
+      card.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-8px) scale(1.02)';
+      });
+      
+      card.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0) scale(1)';
+      });
+    });
+
+    // Floating action button rotation
+    document.querySelector('.fab').addEventListener('mouseenter', function() {
+      this.style.transform = 'scale(1.1) rotate(90deg)';
+    });
+
+    document.querySelector('.fab').addEventListener('mouseleave', function() {
+      this.style.transform = 'scale(1) rotate(0deg)';
+    });
+  </script>
+</body>
+</html>

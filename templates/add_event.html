@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+  <meta charset="UTF-8" />
+  <title>Add Event | UniVerse</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Import Inter font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* Taken from first code's CSS */
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(-45deg, #667eea, #764ba2, #667eea, #f093fb);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      min-height: 100vh;
+      margin: 0;
+      color: white;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Glassmorphism effect */
+    .glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .glass-dark {
+      background: rgba(17, 24, 39, 0.85);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(75, 85, 99, 0.3);
+    }
+
+    /* Hover animations */
+    .card-hover {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card-hover:hover {
+      transform: translateY(-8px) scale(1.02);
+    }
+
+    /* Floating animation */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+
+    .float-animation {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    /* Shimmer effect */
+    .shimmer {
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      animation: shimmer 2s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    /* Particle background */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      animation: particleFloat 20s infinite linear;
+    }
+
+    @keyframes particleFloat {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100px) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    /* Input focus effects */
+    .input-glow {
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .input-glow:focus {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+      outline: none;
+    }
+
+    .input-glow::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: inherit;
+      padding: 2px;
+      background: linear-gradient(45deg, #8b5cf6, #06b6d4, #8b5cf6);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: destination-out;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .input-glow:focus::before {
+      opacity: 1;
+    }
+
+    /* Button animations */
+    .btn-glow {
+      position: relative;
+      overflow: hidden;
+      border-radius: 0.375rem; /* rounded-md */
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-glow::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.5s;
+      z-index: 0;
+    }
+
+    .btn-glow:hover::before {
+      left: 100%;
+    }
+
+    /* File upload styling */
+    .file-upload {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .file-upload input[type=file] {
+      position: absolute;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    .file-upload-design {
+      background: rgba(17, 24, 39, 0.8);
+      border: 2px dashed rgba(139, 92, 246, 0.5);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      transition: all 0.3s ease;
+      color: white;
+      font-weight: 600;
+    }
+
+    .file-upload:hover .file-upload-design {
+      border-color: rgba(139, 92, 246, 0.8);
+      background: rgba(139, 92, 246, 0.1);
+      transform: scale(1.02);
+    }
+
+    /* Pulse effect for event icon */
+    @keyframes pulse-event {
+      0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.5));
+      }
+      50% {
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.8));
+      }
+    }
+
+    .event-pulse {
+      animation: pulse-event 3s ease-in-out infinite;
+    }
+
+    /* Progress steps */
+    .progress-step {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      transition: all 0.3s ease;
+    }
+
+    .progress-step.active {
+      background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+      transform: scale(1.1);
+    }
+
+    .progress-step.inactive {
+      background: rgba(75, 85, 99, 0.5);
+    }
+
+    /* Form container animation */
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .slide-in {
+      animation: slideIn 0.6s ease-out;
+    }
+
+    /* Custom styles for the combined layout */
+
+    /* Container styling (centered and max width like second code) */
+    .container {
+      max-width: 600px;
+      margin: 4rem auto;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 30px rgba(139, 92, 246, 0.3);
+    }
+
+    /* Use glass-dark for container */
+    .container.glass-dark {
+      background: rgba(17, 24, 39, 0.85);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(75, 85, 99, 0.3);
+    }
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(to right, #a78bfa, #06b6d4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-align: center;
+    }
+
+    /* Back link styling */
+    .back-link {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #a78bfa;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      transition: color 0.3s ease;
+    }
+    .back-link:hover {
+      color: #06b6d4;
+      text-decoration: underline;
+    }
+
+    /* Form styling */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      align-items: center;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    textarea {
+      width: 100%;
+      max-width: 100%;
+      background: rgba(17, 24, 39, 0.8);
+      color: white;
+      border: none;
+      border-radius: 0.75rem;
+      padding: 1rem 1.5rem;
+      font-size: 1.125rem;
+      box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    input[type="text"].input-glow,
+    input[type="date"].input-glow,
+    textarea.input-glow {
+      position: relative;
+    }
+
+    input[type="text"].input-glow:focus,
+    input[type="date"].input-glow:focus,
+    textarea.input-glow:focus {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(139, 92, 246, 0.5);
+      outline: none;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .file-upload-wrapper {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .file-upload-label {
+      display: block;
+      width: 100%;
+      background: rgba(17, 24, 39, 0.8);
+      border: 2px dashed rgba(139, 92, 246, 0.5);
+      border-radius: 0.75rem;
+      padding: 2rem 1rem;
+      text-align: center;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      user-select: none;
+      box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+    }
+
+    .file-upload-label:hover {
+      border-color: rgba(139, 92, 246, 0.8);
+      background: rgba(139, 92, 246, 0.1);
+      transform: scale(1.02);
+    }
+
+    .file-upload-desc {
+      margin-top: 0.5rem;
+      font-size: 0.875rem;
+      color: #9ca3af;
+      text-align: center;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      max-width: 100%;
+      background: linear-gradient(90deg, #a78bfa, #06b6d4);
+      border: none;
+      padding: 1rem 1.5rem;
+      border-radius: 0.75rem;
+      color: white;
+      font-weight: 700;
+      font-size: 1.125rem;
+      box-shadow: 0 0 25px rgba(139, 92, 246, 0.7);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    button[type="submit"]:hover {
+      background: linear-gradient(90deg, #7c3aed, #0e7490);
+      box-shadow: 0 0 40px rgba(139, 92, 246, 1);
+    }
+
+    /* Center text in inputs */
+    input[type="text"],
+    input[type="date"],
+    textarea {
+      text-align: center;
+    }
+  </style>
+</head>
+<body class="gradient-bg">
+  <!-- Particles background -->
+  <div class="particles">
+    <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+    <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
+    <div class="particle" style="left: 30%; animation-delay: 4s;"></div>
+    <div class="particle" style="left: 40%; animation-delay: 6s;"></div>
+    <div class="particle" style="left: 50%; animation-delay: 8s;"></div>
+    <div class="particle" style="left: 60%; animation-delay: 10s;"></div>
+    <div class="particle" style="left: 70%; animation-delay: 12s;"></div>
+    <div class="particle" style="left: 80%; animation-delay: 14s;"></div>
+    <div class="particle" style="left: 90%; animation-delay: 16s;"></div>
+  </div>
+
+  <div class="container glass-dark slide-in">
+    <h1>📢 Announce New Event</h1>
+    <a href="/events" class="back-link">← Back to Events</a>
+
+    <form method="POST" action="/events/create" enctype="multipart/form-data">
+      <input
+        type="text"
+        name="title"
+        placeholder="Title"
+        required
+        class="input-glow"
+      />
+
+      <input
+        type="date"
+        name="date"
+        required
+        class="input-glow"
+      />
+
+      <textarea
+        name="description"
+        rows="4"
+        placeholder="Description"
+        required
+        class="input-glow"
+      ></textarea>
+
+      <div class="file-upload-wrapper">
+        <label for="photo-upload" class="file-upload-label">
+          📤 Drop your image here or click to browse
+        </label>
+        <input
+          id="photo-upload"
+          type="file"
+          name="photo"
+          accept="image/*"
+        />
+        <p class="file-upload-desc">PNG, JPG or GIF (max 10MB)</p>
+      </div>
+
+      <button type="submit" class="btn-glow">
+        Announce
+      </button>
+    </form>
+  </div>
+</body>
+</html>

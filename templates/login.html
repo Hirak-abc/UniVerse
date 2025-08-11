@@ -1,13 +1,282 @@
 <!DOCTYPE html>
-<html>
-<head><title>Login</title></head>
-<body>
-    <h2>Login</h2>
-    <form method="POST">
-        Email: <input type="email" name="email" required><br>
-        Password: <input type="password" name="password" required><br>
-        <button type="submit">Login</button>
-    </form>
-    <p>Don't have an account? <a href="/register">Register here</a></p>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login | UniVerse</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #475569 75%, #64748b 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .glass-container {
+            background: rgba(30, 41, 59, 0.3);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        
+        .input-field {
+            background: rgba(51, 65, 85, 0.5);
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            background: rgba(51, 65, 85, 0.8);
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+        
+        .login-btn {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .login-btn:hover::before {
+            left: 100%;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px -12px rgba(99, 102, 241, 0.4);
+        }
+        
+        .float-element {
+            animation: floatAnimation 6s ease-in-out infinite;
+        }
+        
+        @keyframes floatAnimation {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        .university-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.03;
+            z-index: -1;
+        }
+        
+        .fade-in {
+            animation: fadeIn 1s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(30, 41, 59, 0.3);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(99, 102, 241, 0.5);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(99, 102, 241, 0.7);
+        }
+    </style>
+</head>
+<body class="text-gray-100 flex items-center justify-center min-h-screen p-4">
+    
+    <!-- University pattern background -->
+    <div class="university-pattern">
+        <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
+            <defs>
+                <pattern id="universityPattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                    <circle cx="10" cy="10" r="1" fill="currentColor"/>
+                    <rect x="5" y="5" width="10" height="10" fill="none" stroke="currentColor" stroke-width="0.5"/>
+                </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#universityPattern)"/>
+        </svg>
+    </div>
+    
+    <!-- Floating decorative elements -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden">
+        <div class="absolute top-20 left-10 text-4xl opacity-20 float-element" style="animation-delay: 0s;">🎓</div>
+        <div class="absolute top-40 right-20 text-3xl opacity-15 float-element" style="animation-delay: 2s;">📚</div>
+        <div class="absolute bottom-32 left-20 text-5xl opacity-10 float-element" style="animation-delay: 4s;">🌟</div>
+        <div class="absolute bottom-20 right-10 text-2xl opacity-20 float-element" style="animation-delay: 6s;">✨</div>
+        <div class="absolute top-1/2 right-1/4 text-6xl opacity-5 float-element" style="animation-delay: 1s;">🏛️</div>
+    </div>
+    
+    <!-- Main login container -->
+    <div class="glass-container rounded-3xl p-8 w-full max-w-md fade-in relative">
+        
+        <!-- University branding -->
+        <div class="text-center mb-8">
+            <div class="inline-block relative mb-4">
+                <div class="absolute -inset-4 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full blur opacity-30"></div>
+                <div class="relative bg-slate-800 rounded-full p-4 shadow-xl">
+                    <span class="text-4xl">🎓</span>
+                </div>
+            </div>
+            
+            <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent mb-2">
+                Welcome to UniVerse
+            </h1>
+            <div class="w-20 h-1 bg-gradient-to-r from-blue-400 to-purple-500 mx-auto rounded-full mb-3"></div>
+            <p class="text-gray-300 text-sm">Your gateway to academic excellence</p>
+        </div>
+        
+        <!-- Login form -->
+        <form method="POST" action="/login" class="space-y-6">
+            <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-200 flex items-center">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/>
+                    </svg>
+                    Email Address
+                </label>
+                <input type="email" name="email" required
+                       placeholder="Enter your university email"
+                       class="input-field w-full px-4 py-3 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+            </div>
+            
+            <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-200 flex items-center">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                    </svg>
+                    Password
+                </label>
+                <input type="password" name="password" required
+                       placeholder="Enter your password"
+                       class="input-field w-full px-4 py-3 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+            </div>
+            
+            <!-- Remember me and forgot password -->
+            <div class="flex items-center justify-between text-sm">
+                <label class="flex items-center space-x-2 cursor-pointer">
+                    <input type="checkbox" class="w-4 h-4 text-indigo-600 bg-gray-700 border-gray-600 rounded focus:ring-indigo-500 focus:ring-2">
+                    <span class="text-gray-300">Remember me</span>
+                </label>
+                <a href="#" class="text-indigo-400 hover:text-indigo-300 transition-colors">
+                    Forgot password?
+                </a>
+            </div>
+            
+            <button type="submit" class="login-btn w-full font-semibold py-3 px-4 rounded-xl text-white shadow-lg relative overflow-hidden">
+                <span class="relative z-10 flex items-center justify-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+                    </svg>
+                    Sign In to UniVerse
+                </span>
+            </button>
+        </form>
+
+        <!-- Divider -->
+        <div class="relative my-6">
+            <div class="absolute inset-0 flex items-center">
+                <div class="w-full border-t border-gray-600"></div>
+            </div>
+            <div class="relative flex justify-center text-sm">
+                <span class="px-4 bg-transparent text-gray-400">New to our community?</span>
+            </div>
+        </div>
+
+        <!-- Register link -->
+        <div class="text-center">
+            <p class="text-gray-300 text-sm mb-4">
+                Join thousands of students in their academic journey
+            </p>
+            <a href="/register" class="inline-flex items-center justify-center w-full py-3 px-4 border border-gray-600 rounded-xl text-gray-200 hover:bg-gray-700/50 transition-all duration-300 group">
+                <svg class="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+                </svg>
+                Create New Account
+            </a>
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-8 pt-6 border-t border-gray-600 text-center">
+            <p class="text-xs text-gray-400">
+                © 2024 UniVerse Platform. Empowering education.
+            </p>
+            <div class="flex items-center justify-center mt-2 space-x-4 text-xs text-gray-500">
+                <a href="#" class="hover:text-gray-300 transition-colors">Privacy</a>
+                <span>•</span>
+                <a href="#" class="hover:text-gray-300 transition-colors">Terms</a>
+                <span>•</span>
+                <a href="#" class="hover:text-gray-300 transition-colors">Support</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Additional university elements -->
+    <div class="fixed bottom-4 left-4 text-6xl opacity-10 animate-pulse">🏛️</div>
+    <div class="fixed top-4 right-4 text-4xl opacity-10 animate-bounce">⭐</div>
+
+    <script>
+        // Add some interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = document.querySelectorAll('.input-field');
+            
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.parentElement.classList.add('focused');
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.parentElement.classList.remove('focused');
+                });
+            });
+
+            // Add typing effect to placeholder
+            const emailInput = document.querySelector('input[type="email"]');
+            if (emailInput) {
+                emailInput.addEventListener('focus', function() {
+                    if (this.value === '') {
+                        this.style.animation = 'none';
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Study Assistant - UniVerse</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Apply saved theme before rendering
+    if (localStorage.getItem("theme") === "dark") {
+      document.documentElement.classList.add("dark");
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    
+    /* Animated gradient background */
+    .gradient-bg {
+      background: linear-gradient(-45deg, #667eea, #764ba2, #667eea, #f093fb);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+    }
+    
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    /* Glassmorphism effect */
+    .glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .glass-dark {
+      background: rgba(17, 24, 39, 0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(75, 85, 99, 0.3);
+    }
+    
+    /* Hover animations */
+    .card-hover {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .card-hover:hover {
+      transform: translateY(-8px) scale(1.02);
+    }
+    
+    /* Floating animation */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+    
+    .float-animation {
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    /* Shimmer effect */
+    .shimmer {
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      animation: shimmer 2s infinite;
+    }
+    
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    
+    /* Pulse animation for AI icon */
+    @keyframes pulse-glow {
+      0%, 100% { 
+        transform: scale(1);
+        filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5));
+      }
+      50% { 
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.8));
+      }
+    }
+    
+    .ai-pulse {
+      animation: pulse-glow 3s ease-in-out infinite;
+    }
+    
+    /* Particle background */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+    
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      animation: particleFloat 20s infinite linear;
+    }
+    
+    @keyframes particleFloat {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100px) rotate(720deg);
+        opacity: 0;
+      }
+    }
+    
+    /* Typing animation */
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    
+    .typing-animation {
+      overflow: hidden;
+      border-right: 2px solid #60a5fa;
+      white-space: nowrap;
+      animation: typing 3s steps(40, end), blink 0.75s step-end infinite;
+    }
+    
+    @keyframes blink {
+      from, to { border-color: transparent; }
+      50% { border-color: #60a5fa; }
+    }
+    
+    /* Button glow effect */
+    .btn-glow {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn-glow::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.5s;
+    }
+    
+    .btn-glow:hover::before {
+      left: 100%;
+    }
+    
+    /* Input focus effect */
+    .input-focus {
+      transition: all 0.3s ease;
+    }
+    
+    .input-focus:focus {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+    }
+  </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 dark:text-white font-sans transition-colors duration-300 gradient-bg min-h-screen">
+  
+  <!-- Animated particles background -->
+  <div class="particles">
+    <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+    <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
+    <div class="particle" style="left: 30%; animation-delay: 4s;"></div>
+    <div class="particle" style="left: 40%; animation-delay: 6s;"></div>
+    <div class="particle" style="left: 50%; animation-delay: 8s;"></div>
+    <div class="particle" style="left: 60%; animation-delay: 10s;"></div>
+    <div class="particle" style="left: 70%; animation-delay: 12s;"></div>
+    <div class="particle" style="left: 80%; animation-delay: 14s;"></div>
+    <div class="particle" style="left: 90%; animation-delay: 16s;"></div>
+  </div>
+
+  <main class="max-w-4xl mx-auto py-12 px-6 relative z-10">
+    
+    <!-- Header Section -->
+    <header class="mb-12 text-center relative">
+        
+<!-- Back Button -->
+<div class="fixed bottom-4 left-4 z-[9999]">
+  <button onclick="history.back()"
+     class="group inline-flex items-center glass-dark text-white px-4 py-2 rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 text-sm">
+    <svg class="w-4 h-4 mr-1 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+            d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+    </svg>
+    <span class="font-semibold">Home</span>
+  </button>
+</div>
+
+
+
+
+      <!-- AI Assistant Icon -->
+      <div class="float-animation mb-8">
+        <div class="inline-block p-6 rounded-full glass-dark shadow-2xl ai-pulse">
+          <span class="text-6xl">🤖</span>
+        </div>
+      </div>
+
+      <h1 class="text-5xl font-bold bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent mb-4">
+        Sitare Buddy
+      </h1>
+      <div class="flex items-center justify-center mb-6">
+        <div class="h-1 w-20 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full"></div>
+        <span class="mx-4 text-2xl">✨</span>
+        <div class="h-1 w-20 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"></div>
+      </div>
+      
+      <p class="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed typing-animation">
+        Your AI-powered academic companion is here to help!
+      </p>
+    </header>
+
+    <!-- Main Chat Interface -->
+    <section class="glass-dark rounded-2xl p-8 shadow-2xl mb-8 card-hover">
+      <form method="POST" action="/study_assistant/ask_form" class="space-y-6">
+        
+        <!-- Input Section -->
+        <div class="relative">
+          <label class="block text-sm font-medium text-gray-300 mb-3">
+            💬 What would you like to know?
+          </label>
+          <div class="relative group">
+            <input
+              type="text"
+              name="message"
+              placeholder="Ask your academic question..."
+              required
+              class="w-full glass-dark text-white placeholder-gray-400 rounded-xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-blue-500 input-focus text-lg border-0 shadow-lg"
+            />
+            <div class="absolute inset-0 rounded-xl shimmer opacity-0 group-hover:opacity-100 pointer-events-none"></div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center">
+          <button
+            type="submit"
+            class="btn-glow bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+          >
+            <span class="flex items-center justify-center">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+              </svg>
+              Ask Assistant
+            </span>
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Quick Examples Section -->
+    <section class="glass-dark rounded-2xl p-8 shadow-xl mb-8">
+      <h3 class="text-2xl font-bold text-white mb-6 text-center">
+        <span class="text-3xl mr-2">💡</span>
+        Quick Examples
+      </h3>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="glass rounded-xl p-4 hover:bg-white/20 transition-all duration-300 cursor-pointer group" onclick="fillQuestion('What is the library timing?')">
+          <div class="flex items-center">
+            <span class="text-2xl mr-3 group-hover:scale-110 transition-transform">📚</span>
+            <span class="text-gray-300 group-hover:text-white">What is the library timing?</span>
+          </div>
+        </div>
+        
+        <div class="glass rounded-xl p-4 hover:bg-white/20 transition-all duration-300 cursor-pointer group" onclick="fillQuestion('What are the attendance rules?')">
+          <div class="flex items-center">
+            <span class="text-2xl mr-3 group-hover:scale-110 transition-transform">📋</span>
+            <span class="text-gray-300 group-hover:text-white">What are the attendance rules?</span>
+          </div>
+        </div>
+        
+        <div class="glass rounded-xl p-4 hover:bg-white/20 transition-all duration-300 cursor-pointer group" onclick="fillQuestion('Help me with exam preparation')">
+          <div class="flex items-center">
+            <span class="text-2xl mr-3 group-hover:scale-110 transition-transform">📝</span>
+            <span class="text-gray-300 group-hover:text-white">Help me with exam preparation</span>
+          </div>
+        </div>
+        
+        <div class="glass rounded-xl p-4 hover:bg-white/20 transition-all duration-300 cursor-pointer group" onclick="fillQuestion('Course registration deadline')">
+          <div class="flex items-center">
+            <span class="text-2xl mr-3 group-hover:scale-110 transition-transform">⏰</span>
+            <span class="text-gray-300 group-hover:text-white">Course registration deadline</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Grid -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      
+      <!-- Academic Support -->
+      <div class="glass-dark rounded-2xl p-6 shadow-xl card-hover">
+        <div class="text-center">
+          <div class="text-4xl mb-4 float-animation">🎓</div>
+          <h4 class="text-lg font-semibold text-white mb-2">Academic Support</h4>
+          <p class="text-gray-400 text-sm">Get help with coursework, assignments, and study strategies</p>
+        </div>
+      </div>
+
+      <!-- Instant Answers -->
+      <div class="glass-dark rounded-2xl p-6 shadow-xl card-hover">
+        <div class="text-center">
+          <div class="text-4xl mb-4 float-animation" style="animation-delay: 1s;">⚡</div>
+          <h4 class="text-lg font-semibold text-white mb-2">Instant Answers</h4>
+          <p class="text-gray-400 text-sm">Quick responses to university policies and procedures</p>
+        </div>
+      </div>
+
+      <!-- 24/7 Available -->
+      <div class="glass-dark rounded-2xl p-6 shadow-xl card-hover">
+        <div class="text-center">
+          <div class="text-4xl mb-4 float-animation" style="animation-delay: 2s;">🌙</div>
+          <h4 class="text-lg font-semibold text-white mb-2">24/7 Available</h4>
+          <p class="text-gray-400 text-sm">Always here when you need academic assistance</p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center">
+      <div class="glass-dark rounded-2xl p-6 shadow-xl">
+        <div class="flex items-center justify-center mb-3">
+          <div class="h-px w-16 bg-gradient-to-r from-transparent to-blue-400"></div>
+          <span class="mx-4 text-2xl">🤖</span>
+          <div class="h-px w-16 bg-gradient-to-l from-transparent to-purple-400"></div>
+        </div>
+        <p class="text-gray-400 text-sm">
+          Powered by AI • Part of UniVerse Platform
+        </p>
+      </div>
+    </footer>
+
+  </main>
+
+  <script>
+    // Add interactive particles
+    function createParticle() {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.animationDelay = Math.random() * 20 + 's';
+      particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+      document.querySelector('.particles').appendChild(particle);
+      
+      setTimeout(() => {
+        particle.remove();
+      }, 20000);
+    }
+    
+    // Create particles periodically
+    setInterval(createParticle, 3000);
+
+    // Fill question function for quick examples
+    function fillQuestion(question) {
+      document.querySelector('input[name="message"]').value = question;
+      document.querySelector('input[name="message"]').focus();
+    }
+
+    // Add subtle hover sound effect simulation
+    document.querySelectorAll('.card-hover, .btn-glow').forEach(element => {
+      element.addEventListener('mouseenter', () => {
+        element.style.filter = 'brightness(1.1)';
+      });
+      element.addEventListener('mouseleave', () => {
+        element.style.filter = 'brightness(1)';
+      });
+    });
+  </script>
+</body>
+</html>

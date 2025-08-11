@@ -1,0 +1,225 @@
+<!-- templates/feed.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>UniVerse Feed</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lobster Two Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Lobster+Two:wght@700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(-45deg, #667eea, #764ba2, #667eea, #f093fb);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+        h1 {
+            font-family: 'Lobster Two', cursive;
+        }
+        #feed-posts > div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            background: rgba(17, 24, 39, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(75, 85, 99, 0.3);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #feed-posts > div:hover {
+            transform: translateY(-8px) scale(1.02);
+        }
+        #feed-posts img {
+            margin-top: 0.75rem;
+            max-width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+        }
+
+        /* Gradient shift animation */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Glass effect */
+        .glass-dark {
+            background: rgba(17, 24, 39, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(75, 85, 99, 0.3);
+        }
+
+        /* Card hover */
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-8px) scale(1.02);
+        }
+
+        /* Floating animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Shimmer effect */
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shimmer 2s infinite;
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Particles background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: particleFloat 20s infinite linear;
+        }
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Button glow effect */
+        .btn-glow {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-glow::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+        .btn-glow:hover::before {
+            left: 100%;
+        }
+    </style>
+</head>
+<body class="text-white min-h-screen flex flex-col items-center p-6 relative">
+
+    <!-- Particles Background -->
+    <div class="particles">
+        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
+        <div class="particle" style="left: 30%; animation-delay: 4s;"></div>
+        <div class="particle" style="left: 40%; animation-delay: 6s;"></div>
+        <div class="particle" style="left: 50%; animation-delay: 8s;"></div>
+        <div class="particle" style="left: 60%; animation-delay: 10s;"></div>
+        <div class="particle" style="left: 70%; animation-delay: 12s;"></div>
+        <div class="particle" style="left: 80%; animation-delay: 14s;"></div>
+        <div class="particle" style="left: 90%; animation-delay: 16s;"></div>
+    </div>
+
+    <a href="/" class="self-start mb-4 text-purple-400 hover:text-purple-600 font-semibold px-2 py-1 text-sm rounded border border-purple-400 hover:border-purple-600 transition btn-glow">
+        ← Back
+    </a>
+
+    <h1 class="text-6xl font-bold text-purple-400 mb-6 text-center w-full max-w-2xl float-animation">
+        UniVerse Feed
+    </h1>
+
+    <form action="/feed/upload" method="POST" enctype="multipart/form-data" 
+          class="glass-dark p-2 rounded-lg w-full max-w-2xl mx-auto transition-all duration-300 card-hover"
+          id="create-post-form">
+        <textarea name="text" placeholder="Write something..." required
+            id="post-textarea"
+            rows="1"
+            class="w-full resize-none overflow-hidden rounded border border-gray-600 focus:outline-none focus:border-purple-400 px-3 py-1 text-sm transition-all duration-300 glass-dark"
+            style="background-color: transparent;"></textarea>
+
+        <div id="expanded-section" class="mt-3 space-y-3 hidden">
+            {{UPLOAD_SECTION}}
+            <button type="submit"
+                class="bg-purple-500 hover:bg-purple-600 px-4 py-2 rounded text-white transition btn-glow">
+                Post
+            </button>
+        </div>
+    </form>
+
+    <div class="w-full max-w-2xl mt-8 space-y-6 mx-auto" id="feed-posts">
+        {{FEED_CONTENT}}
+    </div>
+
+    <a href="/feed/myuploads" title="My Uploads"
+        class="fixed top-4 right-4 bg-purple-600 rounded-full w-10 h-10 flex items-center justify-center text-white text-lg font-bold hover:bg-purple-700 z-50 select-none">
+        📌
+    </a>
+
+    <script>
+        const textarea = document.getElementById('post-textarea');
+        const expandedSection = document.getElementById('expanded-section');
+
+        function autoResize() {
+            textarea.style.height = 'auto';
+            textarea.style.height = textarea.scrollHeight + 'px';
+        }
+
+        textarea.addEventListener('input', autoResize);
+        textarea.addEventListener('focus', () => {
+            expandedSection.classList.remove('hidden');
+            textarea.setAttribute('rows', 4);
+        });
+        textarea.addEventListener('blur', () => {
+            if (!textarea.value.trim()) {
+                expandedSection.classList.add('hidden');
+                textarea.setAttribute('rows', 1);
+                textarea.style.height = 'auto';
+            }
+        });
+        autoResize();
+
+        // Add particles dynamically
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            document.querySelector('.particles').appendChild(particle);
+            setTimeout(() => { particle.remove(); }, 20000);
+        }
+        setInterval(createParticle, 3000);
+    </script>
+
+</body>
+</html>

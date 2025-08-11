@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <title>Academic Corner</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Animated gradient background */
+        .gradient-bg {
+            background: linear-gradient(-45deg, #667eea, #764ba2, #667eea, #f093fb);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh; /* Full page height */
+            padding: 20px;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Cards have semi-transparent background so gradient shows through */
+        .card-bg {
+            background: rgba(26, 16, 61, 0.85);
+        }
+
+        /* Table rows semi-transparent */
+        .table-odd {
+            background: rgba(31, 41, 55, 0.8);
+        }
+        .table-even {
+            background: rgba(55, 65, 81, 0.8);
+        }
+    </style>
+</head>
+<body class="gradient-bg text-gray-100 transition-colors duration-300">
+
+    <div class="max-w-5xl mx-auto p-6">
+        <h1 class="text-4xl font-bold mb-6 text-center text-purple-200">
+            📚 Academic Corner
+        </h1>
+
+        <!-- Master Projects Section -->
+        <section class="mb-10">
+            <h2 class="text-2xl font-semibold mb-4 text-purple-100">🚀 Coding & Reasoning Master Projects</h2>
+            <p class="mb-4 text-gray-200">These long-term, high-impact projects combine reasoning, logic, system design, and coding. Perfect for building over 10–24 months.</p>
+            <div class="space-y-6">
+                <div class="card-bg p-6 rounded shadow">
+                    <h3 class="text-xl font-bold mb-2">1. Build a Full-Fledged Social Media Platform</h3>
+                    <ul class="list-disc pl-6 text-sm text-gray-100">
+                        <li>Learn HTML, CSS, JS, React, Node.js, MongoDB/PostgreSQL</li>
+                        <li>Implement authentication (OAuth 2.0, JWT)</li>
+                        <li>Include feed, stories, chat, notifications, profile system</li>
+                        <li>Build REST APIs and secure backend</li>
+                        <li>Deploy using Docker, AWS/GCP</li>
+                    </ul>
+                </div>
+
+                <div class="card-bg p-6 rounded shadow">
+                    <h3 class="text-xl font-bold mb-2">2. Multiplayer Battle Royale Game (like PUBG)</h3>
+                    <ul class="list-disc pl-6 text-sm text-gray-100">
+                        <li>Start with Unity or Unreal Engine tutorials</li>
+                        <li>Design weapons, maps, characters</li>
+                        <li>Implement multiplayer logic using Photon or Mirror</li>
+                        <li>Use sockets/WebRTC for real-time communication</li>
+                        <li>Optimize performance for large-scale sessions</li>
+                    </ul>
+                </div>
+
+                <div class="card-bg p-6 rounded shadow">
+                    <h3 class="text-xl font-bold mb-2">3. AI-Based Learning App (Auto-Suggestions + Analytics)</h3>
+                    <ul class="list-disc pl-6 text-sm text-gray-100">
+                        <li>Learn ML basics: scikit-learn, pandas, NLP</li>
+                        <li>Build content-based recommendation engine</li>
+                        <li>Create analytics dashboard for performance tracking</li>
+                        <li>Design UI using Flutter or React Native</li>
+                        <li>Deploy backend using FastAPI + PostgreSQL</li>
+                    </ul>
+                </div>
+
+                <div class="card-bg p-6 rounded shadow">
+                    <h3 class="text-xl font-bold mb-2">4. Full-Stack E-Commerce with Price Comparison + Reviews</h3>
+                    <ul class="list-disc pl-6 text-sm text-gray-100">
+                        <li>Scrape data from Amazon/Flipkart using BeautifulSoup/ScraperAPI</li>
+                        <li>Implement cart, wishlist, search filter, review system</li>
+                        <li>Integrate payment gateway (Razorpay/Stripe)</li>
+                        <li>Build admin dashboard + product analytics</li>
+                    </ul>
+                </div>
+
+                <div class="card-bg p-6 rounded shadow">
+                    <h3 class="text-xl font-bold mb-2">5. Visual Programming IDE for Kids (Drag & Drop Logic Blocks)</h3>
+                    <ul class="list-disc pl-6 text-sm text-gray-100">
+                        <li>Design block-based editor using Blockly or Scratch</li>
+                        <li>Implement interpreter for block execution</li>
+                        <li>Create curriculum levels (Beginner to Advanced)</li>
+                        <li>Add sound/animation feedback</li>
+                        <li>Host and track progress of students</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Novels Section -->
+        <section class="mb-10">
+            <h2 class="text-2xl font-semibold mb-4 text-purple-100">📖 Literature & Reading Room</h2>
+            <ul class="list-disc pl-6 text-gray-100">
+                {{ novels_html }}
+            </ul>
+        </section>
+
+        <!-- Curriculum Section -->
+        <section class="mb-10">
+            <h2 class="text-2xl font-semibold mb-4 text-purple-100">🎓 Sitare Curriculum</h2>
+            <div class="text-gray-100 overflow-x-auto">
+                <table class="w-full text-sm text-left shadow-md rounded overflow-hidden">
+                    <tbody>
+                        <tr class="table-odd">{{ curriculum_html }}</tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

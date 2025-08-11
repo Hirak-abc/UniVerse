@@ -1,9 +1,330 @@
 <!DOCTYPE html>
-<html>
-<head><title>UniVerse Home</title></head>
-<body>
-    <h1>Welcome to UniVerse</h1>
-    <p>User: {{ user }} | Role: {{ role }} | Rank: {{ rank }}</p>
-    <a href="/lost_found">Lost & Found</a>
+<html lang="en" class="">
+<head>
+  <meta charset="UTF-8">
+  <title>UniVerse Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Apply saved theme before rendering
+    if (localStorage.getItem("theme") === "dark") {
+      document.documentElement.classList.add("dark");
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    
+    /* Animated gradient background */
+    .gradient-bg {
+      background: linear-gradient(-45deg, #667eea, #764ba2, #667eea, #f093fb);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+    }
+    
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    /* Glassmorphism effect */
+    .glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .glass-dark {
+      background: rgba(17, 24, 39, 0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(75, 85, 99, 0.3);
+    }
+    
+    /* Hover animations */
+    .card-hover {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .card-hover:hover {
+      transform: translateY(-8px) scale(1.02);
+    }
+    
+    /* Floating animation */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+    
+    .float-animation {
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    /* Shimmer effect */
+    .shimmer {
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      animation: shimmer 2s infinite;
+    }
+    
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    
+    /* Particle background */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+    
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      animation: particleFloat 20s infinite linear;
+    }
+    
+    @keyframes particleFloat {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100px) rotate(720deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 dark:text-white font-sans transition-colors duration-300 gradient-bg min-h-screen">
+  
+  <!-- Animated particles background -->
+  <div class="particles">
+    <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+    <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
+    <div class="particle" style="left: 30%; animation-delay: 4s;"></div>
+    <div class="particle" style="left: 40%; animation-delay: 6s;"></div>
+    <div class="particle" style="left: 50%; animation-delay: 8s;"></div>
+    <div class="particle" style="left: 60%; animation-delay: 10s;"></div>
+    <div class="particle" style="left: 70%; animation-delay: 12s;"></div>
+    <div class="particle" style="left: 80%; animation-delay: 14s;"></div>
+    <div class="particle" style="left: 90%; animation-delay: 16s;"></div>
+  </div>
+
+  <main class="max-w-7xl mx-auto py-12 px-6 relative z-10">
+    <!-- Header with enhanced styling -->
+    <header class="mb-16 text-center relative">
+            <!-- Settings Button -->
+      <div class="absolute top-0 right-0">
+         <!-- Settings button (fixed to viewport so nothing can overlap) -->
+  <a
+    id="settings-btn"
+    href="/settings"
+    aria-label="Settings"
+    class="fixed top-6 right-6 z-50 pointer-events-auto inline-block bg-indigo-600 text-white px-4 py-2 rounded-lg shadow hover:bg-indigo-700 transition focus:outline-none focus:ring-2 focus:ring-indigo-400"
+  >
+    ⚙️ Settings
+  </a>
+      </div>
+
+      <!-- University branding -->
+      <div class="float-animation mb-8">
+        <div class="inline-block p-6 rounded-full glass-dark shadow-2xl">
+          <span class="text-6xl">🎓</span>
+        </div>
+      </div>
+      <h1 class="text-6xl font-bold text-white mb-4 pb-2 px-1" style="text-shadow: 0 0 10px rgba(159, 122, 234, 0.7);">
+        Welcome to UniVerse
+      </h1>
+      <div class="flex items-center justify-center mb-6">
+        <div class="h-1 w-20 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full"></div>
+        <span class="mx-4 text-2xl">✨</span>
+        <div class="h-1 w-20 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"></div>
+      </div>
+      
+      <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
+        Your personalized university ecosystem awaits. Stay connected, learn, and grow in our vibrant academic community.
+      </p>
+      
+      <!-- User info with enhanced design -->
+      <div class="mt-8 glass-dark rounded-2xl p-6 max-w-md mx-auto shadow-xl">
+        <div class="flex items-center justify-between text-sm">
+          <div class="flex items-center space-x-2">
+            <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+            <span class="text-gray-300">User: {{ user }}</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <span class="px-3 py-1 bg-blue-500 text-white rounded-full text-xs font-medium">{{ role }}</span>
+            <span class="px-3 py-1 bg-purple-500 text-white rounded-full text-xs font-medium">{{ rank }}</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Enhanced Feature Cards -->
+    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      
+      <!-- Academic Corner -->
+      <a href="/academic" class="group card-hover glass-dark rounded-2xl p-8 shadow-xl hover:shadow-2xl relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <div class="relative z-10">
+          <div class="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">📚</div>
+          <h3 class="text-2xl font-bold mb-3 text-white">Academic Corner</h3>
+          <p class="text-gray-300 leading-relaxed">All your academic needs in one place. Access curriculum, projects, and learning resources.</p>
+          <div class="mt-4 flex items-center text-blue-400 group-hover:text-blue-300">
+            <span class="text-sm font-medium">Explore now</span>
+            <svg class="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </div>
+        </div>
+      </a>
+
+      <!-- Sitare Buddy -->
+      <a href="/study_assistant" class="group card-hover glass-dark rounded-2xl p-8 shadow-xl hover:shadow-2xl relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-green-500/20 to-teal-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <div class="relative z-10">
+          <div class="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">🤖</div>
+          <h3 class="text-2xl font-bold mb-3 text-white">Sitare Buddy</h3>
+          <p class="text-gray-300 leading-relaxed">AI-powered academic and emotional assistant tailored to your learning journey.</p>
+          <div class="mt-4 flex items-center text-green-400 group-hover:text-green-300">
+            <span class="text-sm font-medium">Chat now</span>
+            <svg class="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </div>
+        </div>
+      </a>
+
+      <!-- News -->
+      <a href="/news" class="group card-hover glass-dark rounded-2xl p-8 shadow-xl hover:shadow-2xl relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-red-500/20 to-orange-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <div class="relative z-10">
+          <div class="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">📰</div>
+          <h3 class="text-2xl font-bold mb-3 text-white">News</h3>
+          <p class="text-gray-300 leading-relaxed">Latest announcements, university news, and global updates from our community.</p>
+          <div class="mt-4 flex items-center text-red-400 group-hover:text-red-300">
+            <span class="text-sm font-medium">Read more</span>
+            <svg class="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </div>
+        </div>
+      </a>
+
+      <!-- Campus Buzz -->
+      <a href="/feed" class="group card-hover glass-dark rounded-2xl p-8 shadow-xl hover:shadow-2xl relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <div class="relative z-10">
+          <div class="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">🧠</div>
+          <h3 class="text-2xl font-bold mb-3 text-white">Campus Buzz</h3>
+          <p class="text-gray-300 leading-relaxed">Real-time student insights and discussions. Connect with your peers.</p>
+          <div class="mt-4 flex items-center text-purple-400 group-hover:text-purple-300">
+            <span class="text-sm font-medium">Join conversation</span>
+            <svg class="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </div>
+        </div>
+      </a>
+
+      <!-- Events & Clubs -->
+      <a href="/events" class="group card-hover glass-dark rounded-2xl p-8 shadow-xl hover:shadow-2xl relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-yellow-500/20 to-orange-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <div class="relative z-10">
+          <div class="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">🎉</div>
+          <h3 class="text-2xl font-bold mb-3 text-white">Events & Clubs</h3>
+          <p class="text-gray-300 leading-relaxed">Explore events, join clubs, and get involved in our vibrant campus life.</p>
+          <div class="mt-4 flex items-center text-yellow-400 group-hover:text-yellow-300">
+            <span class="text-sm font-medium">Discover events</span>
+            <svg class="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </div>
+        </div>
+      </a>
+
+      <!-- Campus Marketplace -->
+      <a href="/marketplace" class="group card-hover glass-dark rounded-2xl p-8 shadow-xl hover:shadow-2xl relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <div class="relative z-10">
+          <div class="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">🛍️</div>
+          <h3 class="text-2xl font-bold mb-3 text-white">Campus Marketplace</h3>
+          <p class="text-gray-300 leading-relaxed">Buy, sell, or exchange books, gadgets, and more with fellow students.</p>
+          <div class="mt-4 flex items-center text-cyan-400 group-hover:text-cyan-300">
+            <span class="text-sm font-medium">Browse items</span>
+            <svg class="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </div>
+        </div>
+      </a>
+
+      <!-- Lost & Found - Spanning full width on small screens -->
+      <a href="/lost_found" class="group card-hover glass-dark rounded-2xl p-8 shadow-xl hover:shadow-2xl relative overflow-hidden md:col-span-2 lg:col-span-1">
+        <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <div class="relative z-10">
+          <div class="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">🧳</div>
+          <h3 class="text-2xl font-bold mb-3 text-white">Lost & Found</h3>
+          <p class="text-gray-300 leading-relaxed">Report or recover lost items on campus. Help build our caring community.</p>
+          <div class="mt-4 flex items-center text-indigo-400 group-hover:text-indigo-300">
+            <span class="text-sm font-medium">Report item</span>
+            <svg class="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </div>
+        </div>
+      </a>
+
+    </section>
+
+    <!-- Footer with university branding -->
+    <footer class="mt-20 text-center">
+      <div class="glass-dark rounded-2xl p-8 shadow-xl">
+        <div class="flex items-center justify-center mb-4">
+          <div class="h-px w-16 bg-gradient-to-r from-transparent to-blue-400"></div>
+          <span class="mx-4 text-3xl">🎓</span>
+          <div class="h-px w-16 bg-gradient-to-l from-transparent to-purple-400"></div>
+        </div>
+        <p class="text-gray-400 text-sm">
+          © 2024 UniVerse Platform. Empowering students, fostering connections, building futures.
+        </p>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // Add some interactive particles
+    function createParticle() {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.animationDelay = Math.random() * 20 + 's';
+      particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+      document.querySelector('.particles').appendChild(particle);
+      
+      setTimeout(() => {
+        particle.remove();
+      }, 20000);
+    }
+    
+    // Create particles periodically
+    setInterval(createParticle, 3000);
+  </script>
 </body>
 </html>
