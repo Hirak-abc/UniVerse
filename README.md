@@ -1,6 +1,9 @@
 <h1 align="center">🌌 UniVerse</h1>
 <h3 align="center">A Smart Social Academic Ecosystem for University Life</h3>
 
+<p align="center">
+  <img src="UniVerse.gif" alt="UniVerse" width="1000" height="800"/>
+</p>
 ---
 
 <h2>📌 Problem Statement</h2>
@@ -79,4 +82,15 @@ Our goal is to build an <b>AI-powered, gamified platform</b> that:
 <h2>📄 License</h2>
 <p>
 This project is licensed under the <b>MIT License</b> – you are free to use and modify with proper attribution.
+</p>
+
+<h3>📥 Clone this Repository</h3>
+
+```bash
+git clone https://github.com/Hirak-abc/UniVerse.git
+```
+
+<h2>⭐ Support</h2>
+<p>
+If you found this project helpful or interesting, please consider supporting it by giving a ⭐ star on GitHub!
 </p>
